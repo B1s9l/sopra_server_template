@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
+
 public class UserServiceTest {
 
   @Mock
@@ -32,6 +34,7 @@ public class UserServiceTest {
     testUser.setId(1L);
     testUser.setName("testName");
     testUser.setUsername("testUsername");
+    testUser.setBirthday(LocalDate.of(2000, 1, 1));
 
     // when -> any object is being save in the userRepository -> return the dummy
     // testUser
@@ -50,6 +53,8 @@ public class UserServiceTest {
     assertEquals(testUser.getId(), createdUser.getId());
     assertEquals(testUser.getName(), createdUser.getName());
     assertEquals(testUser.getUsername(), createdUser.getUsername());
+    assertEquals(testUser.getBirthday(), createdUser.getBirthday());
+    //assertEquals(testUser.getCreationDate(), createdUser.getCreationDate());
     assertNotNull(createdUser.getToken());
     assertEquals(UserStatus.OFFLINE, createdUser.getStatus());
   }

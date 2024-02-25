@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
+
 /**
  * Test class for the UserResource REST resource.
  *
@@ -43,6 +45,7 @@ public class UserServiceIntegrationTest {
     testUser.setName("testName");
     testUser.setUsername("testUsername");
     testUser.setPassword("password");
+    testUser.setBirthday(LocalDate.of(2000, 1, 1));
 
     // when
     User createdUser = userService.createUser(testUser);
@@ -52,6 +55,8 @@ public class UserServiceIntegrationTest {
     assertEquals(testUser.getName(), createdUser.getName());
     assertEquals(testUser.getUsername(), createdUser.getUsername());
     assertEquals(testUser.getPassword(), createdUser.getPassword());
+    assertEquals(testUser.getBirthday(), createdUser.getBirthday());
+    //assertEquals(testUser.getCreationDate(), createdUser.getCreationDate());
     assertNotNull(createdUser.getToken());
     assertEquals(UserStatus.OFFLINE, createdUser.getStatus());
   }
@@ -64,6 +69,7 @@ public void find_testUsername_must_be_null() {
     testUser.setName("testName");
     testUser.setUsername("testUsername");
     testUser.setPassword("password");
+    testUser.setBirthday(LocalDate.of(2000, 1, 1));
     User createdUser = userService.createUser(testUser);
 }
 
@@ -75,6 +81,7 @@ public void find_testUsername_must_be_null() {
     testUser.setName("testName");
     testUser.setUsername("testUsername");
     testUser.setPassword("password");
+    testUser.setBirthday(LocalDate.of(2000, 1, 1));
     User createdUser = userService.createUser(testUser);
 
     // attempt to create second user with same username
@@ -84,6 +91,7 @@ public void find_testUsername_must_be_null() {
     testUser2.setName("testName2");
     testUser2.setUsername("testUsername");
     testUser2.setPassword("password");
+    testUser.setBirthday(LocalDate.of(2000, 1, 1));
 
     // check that an error is thrown
     assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2));

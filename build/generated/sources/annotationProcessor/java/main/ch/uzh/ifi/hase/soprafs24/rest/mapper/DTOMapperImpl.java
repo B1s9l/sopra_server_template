@@ -7,7 +7,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-02-23T18:28:53+0100",
+    date = "2024-02-25T12:21:26+0100",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 17.0.10 (Eclipse Adoptium)"
 )
 public class DTOMapperImpl implements DTOMapper {
@@ -20,9 +20,11 @@ public class DTOMapperImpl implements DTOMapper {
 
         User user = new User();
 
+        user.setBirthday( userPostDTO.getBirthday() );
         user.setName( userPostDTO.getName() );
         user.setPassword( userPostDTO.getPassword() );
         user.setUsername( userPostDTO.getUsername() );
+        user.setCreationDate( userPostDTO.getCreationDate() );
 
         return user;
     }
@@ -35,9 +37,11 @@ public class DTOMapperImpl implements DTOMapper {
 
         UserGetDTO userGetDTO = new UserGetDTO();
 
-        userGetDTO.setName( user.getName() );
+        userGetDTO.setBirthday( user.getBirthday() );
         userGetDTO.setPassword( user.getPassword() );
+        userGetDTO.setName( user.getName() );
         userGetDTO.setId( user.getId() );
+        userGetDTO.setCreationDate( user.getCreationDate() );
         userGetDTO.setUsername( user.getUsername() );
         userGetDTO.setStatus( user.getStatus() );
 

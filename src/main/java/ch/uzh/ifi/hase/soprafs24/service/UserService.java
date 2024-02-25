@@ -15,6 +15,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.UUID;
 
+import java.time.LocalDate;
+
 /**
  * User Service
  * This class is the "worker" and responsible for all functionality related to
@@ -42,6 +44,7 @@ public class UserService {
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
     newUser.setStatus(UserStatus.OFFLINE);
+    newUser.setCreationDate(LocalDate.now());
     checkIfUserExists(newUser);
     // saves the given entity but data is only persisted in the database once
     // flush() is called
@@ -51,6 +54,7 @@ public class UserService {
     log.debug("Created Information for User: {}", newUser);
     return newUser;
   }
+
 
   /**
    * This is a helper method that will check the uniqueness criteria of the
@@ -68,6 +72,25 @@ public class UserService {
     if (userByUsername != null) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is not unique. Therefore, the user could not be created!");
     }
+
+
   }
+  public User loginUser(User existingUser) {
+    checkIfUserCorrect(existingUser);
+    log.debug("Logged In for User: {}", existingUser);
+    return existingUser;
+  }
+
+  private void checkIfUserCorrect(User userToBeLoggedIn) {
+      User userByUsername = userRepository.findByUsername(userToBeLoggedIn.getUsername());
+      User passwordByUsername = userRepository.findByUsername(userToBeLoggedIn.getUsername());
+
+      if (userByUsername == null || !(passwordByUsername != null && passwordByUsername.getPassword().equals(userToBeLoggedIn.getPassword()))) {
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username or password provided are incorrect. Check your spelling or register a new user!");
+      }
+  }
+
 }
+
+
 
