@@ -42,10 +42,11 @@ public class UserService {
   }
 
   public User createUser(User newUser) {
+    checkIfUserExists(newUser);
     newUser.setToken(UUID.randomUUID().toString());
     newUser.setStatus(UserStatus.OFFLINE);
     newUser.setCreationDate(LocalDate.now());
-    checkIfUserExists(newUser);
+
     // saves the given entity but data is only persisted in the database once
     // flush() is called
     newUser = userRepository.save(newUser);
@@ -68,16 +69,18 @@ public class UserService {
    */
   private void checkIfUserExists(User userToBeCreated) {
     User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
-
     if (userByUsername != null) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is not unique. Therefore, the user could not be created!");
     }
 
 
   }
-  public User loginUser(User existingUser) {
-    checkIfUserCorrect(existingUser);
-    log.debug("Logged In for User: {}", existingUser);
+  public User loginUser(User currentUser) {
+    checkIfUserCorrect(currentUser);
+    currentUser.setStatus(UserStatus.ONLINE);
+    userRepository.flush();
+    log.debug("Logged In for User: {}", currentUser);
+    User existingUser = userRepository.findByUsername(currentUser.getUsername());
     return existingUser;
   }
 
@@ -85,7 +88,7 @@ public class UserService {
       User userByUsername = userRepository.findByUsername(userToBeLoggedIn.getUsername());
       User passwordByUsername = userRepository.findByUsername(userToBeLoggedIn.getUsername());
 
-      if (userByUsername == null || !(passwordByUsername != null && passwordByUsername.getPassword().equals(userToBeLoggedIn.getPassword()))) {
+      if (userByUsername == null || !(passwordByUsername != null && userByUsername.getPassword().equals(userToBeLoggedIn.getPassword()))) {
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username or password provided are incorrect. Check your spelling or register a new user!");
       }
   }
