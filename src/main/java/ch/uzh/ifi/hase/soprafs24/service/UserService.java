@@ -42,7 +42,7 @@ public class UserService {
   }
 
   public User createUser(User newUser) {
-    checkIfUserExists(newUser);
+    checkIfUsernameValid(newUser);
     newUser.setToken(UUID.randomUUID().toString());
     newUser.setStatus(UserStatus.OFFLINE);
     newUser.setCreationDate(LocalDate.now());
@@ -72,9 +72,15 @@ public class UserService {
     if (userByUsername != null) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is not unique. Therefore, the user could not be created!");
     }
-
-
+}
+  private void checkIfUsernameValid(User userToBeCreated) {
+    String username = userToBeCreated.getUsername();
+    if (username.equals("list")) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is not valid. Therefore, the user could not be created!");
+    }
+    checkIfUserExists(userToBeCreated);
   }
+
   public User loginUser(User currentUser) {
     checkIfUserCorrect(currentUser);
     currentUser.setStatus(UserStatus.ONLINE);
@@ -96,5 +102,11 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id: " + id));
     }
+
+    public User getUserByUsername(String username) {
+        User userByUsername = userRepository.findByUsername(username);
+        return userByUsername;
+    }
+
 }
 
