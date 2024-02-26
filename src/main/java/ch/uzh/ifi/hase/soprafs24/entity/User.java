@@ -27,7 +27,7 @@ public class User implements Serializable {
   @GeneratedValue
   private Long id;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private String name;
 
   @Column(nullable = false, unique = true)
@@ -42,7 +42,7 @@ public class User implements Serializable {
   @Column(nullable = false)
   private String password;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private LocalDate birthday;
 
   @Column(nullable = false)
