@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ch.uzh.ifi.hase.soprafs24.service.UserServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2024-02-26T20:51:18" hostname="The-MAC" time="0.254">
+<testsuite name="ch.uzh.ifi.hase.soprafs24.service.UserServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2024-02-26T22:10:43" hostname="The-MAC" time="0.262">
   <properties/>
-  <testcase name="createUser_validInputs_success()" classname="ch.uzh.ifi.hase.soprafs24.service.UserServiceTest" time="0.249"/>
-  <testcase name="createUser_duplicateInputs_throwsException()" classname="ch.uzh.ifi.hase.soprafs24.service.UserServiceTest" time="0.003"/>
+  <testcase name="createUser_validInputs_success()" classname="ch.uzh.ifi.hase.soprafs24.service.UserServiceTest" time="0.256"/>
+  <testcase name="createUser_duplicateInputs_throwsException()" classname="ch.uzh.ifi.hase.soprafs24.service.UserServiceTest" time="0.004"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -98,10 +98,16 @@ public class UserService {
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username or password provided are incorrect. Check your spelling or register a new user!");
       }
   }
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
+/* Old version
+    public User getUserByUserId(Long id) {
+        return userRepository.findByUserId(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id: " + id));
     }
+*/
+    public User getUserByUserId(Long userId) {
+        User userByUserId = userRepository.findByUserId(userId);
+        return userByUserId;
+        }
 
     public User getUserByUsername(String username) {
         User userByUsername = userRepository.findByUsername(username);

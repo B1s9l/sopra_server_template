@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class UserPostDTO {
 
-  private String name;
+  private Long userId;
 
   private String username;
 
@@ -14,13 +14,14 @@ public class UserPostDTO {
 
   private LocalDate creationDate;
 
-  public String getName() {
-    return name;
+  public Long getUserId() {
+    return userId;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setUserId(Long userId) {
+    this.userId = userId;
   }
+
 
   public String getUsername() {
     return username;

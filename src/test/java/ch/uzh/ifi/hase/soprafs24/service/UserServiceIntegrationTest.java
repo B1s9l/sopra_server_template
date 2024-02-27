@@ -42,7 +42,9 @@ public class UserServiceIntegrationTest {
     assertNull(userRepository.findByUsername("testUsername"));
 
     User testUser = new User();
+    /* Remove NAME
     testUser.setName("testName");
+    */
     testUser.setUsername("testUsername");
     testUser.setPassword("password");
     testUser.setBirthday(LocalDate.of(2000, 1, 1));
@@ -51,8 +53,10 @@ public class UserServiceIntegrationTest {
     User createdUser = userService.createUser(testUser);
 
     // then
-    assertEquals(testUser.getId(), createdUser.getId());
+    assertEquals(testUser.getUserId(), createdUser.getUserId());
+    /* Remove NAME
     assertEquals(testUser.getName(), createdUser.getName());
+    */
     assertEquals(testUser.getUsername(), createdUser.getUsername());
     assertEquals(testUser.getPassword(), createdUser.getPassword());
     assertEquals(testUser.getBirthday(), createdUser.getBirthday());
@@ -66,7 +70,9 @@ public void find_testUsername_must_be_null() {
     assertNull(userRepository.findByUsername("testUsername"));
 
     User testUser = new User();
+    /* Remove NAME
     testUser.setName("testName");
+    */
     testUser.setUsername("testUsername");
     testUser.setPassword("password");
     testUser.setBirthday(LocalDate.of(2000, 1, 1));
@@ -78,7 +84,9 @@ public void find_testUsername_must_be_null() {
     assertNull(userRepository.findByUsername("testUsername"));
 
     User testUser = new User();
+    /* Remove NAME
     testUser.setName("testName");
+    */
     testUser.setUsername("testUsername");
     testUser.setPassword("password");
     testUser.setBirthday(LocalDate.of(2000, 1, 1));
@@ -88,7 +96,9 @@ public void find_testUsername_must_be_null() {
     User testUser2 = new User();
 
     // change the name but forget about the username
+    /* Remove NAME
     testUser2.setName("testName2");
+    */
     testUser2.setUsername("testUsername");
     testUser2.setPassword("password");
     testUser.setBirthday(LocalDate.of(2000, 1, 1));

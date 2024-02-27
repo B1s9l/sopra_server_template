@@ -31,8 +31,10 @@ public class UserServiceTest {
 
     // given
     testUser = new User();
-    testUser.setId(1L);
+    testUser.setUserId(1L);
+    /* Remove NAME
     testUser.setName("testName");
+    */
     testUser.setUsername("testUsername");
     testUser.setBirthday(LocalDate.of(2000, 1, 1));
 
@@ -50,8 +52,10 @@ public class UserServiceTest {
     // then
     Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any());
 
-    assertEquals(testUser.getId(), createdUser.getId());
+    assertEquals(testUser.getUserId(), createdUser.getUserId());
+    /* Remove NAME
     assertEquals(testUser.getName(), createdUser.getName());
+    */
     assertEquals(testUser.getUsername(), createdUser.getUsername());
     assertEquals(testUser.getBirthday(), createdUser.getBirthday());
     //assertEquals(testUser.getCreationDate(), createdUser.getCreationDate());
@@ -81,7 +85,9 @@ public class UserServiceTest {
     userService.createUser(testUser);
 
     // when -> setup additional mocks for UserRepository
+    /* Remove NAME
     Mockito.when(userRepository.findByName(Mockito.any())).thenReturn(testUser);
+    */
     Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
 
     // then -> attempt to create second user with same user -> check that an error

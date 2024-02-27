@@ -25,10 +25,7 @@ public class User implements Serializable {
 
   @Id
   @GeneratedValue
-  private Long id;
-
-  @Column(nullable = true)
-  private String name;
+  private Long userId;
 
   @Column(nullable = false, unique = true)
   private String username;
@@ -48,18 +45,11 @@ public class User implements Serializable {
   @Column(nullable = false)
   private LocalDate creationDate;
 
-  public Long getId() {
-    return id;
+  public Long getUserId() {
+    return userId;
   }
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-  public void setName(String name) {
-    this.name = name;
+  public void setUserId(Long userId) {
+    this.userId = userId;
   }
 
   public String getUsername() {

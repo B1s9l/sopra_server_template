@@ -34,11 +34,11 @@ public class UserController {
 
 
 
-  @GetMapping("/users/{id}") // New endpoint for fetching a specific user by id
+  @GetMapping("/users/{userId}") // New endpoint for fetching a specific user by id
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public UserGetDTO getUserById(@PathVariable Long id) {
-    User user = userService.getUserById(id);
+  public UserGetDTO getUserByUserId(@PathVariable Long userId) {
+    User user = userService.getUserByUserId(userId);
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
   }
 

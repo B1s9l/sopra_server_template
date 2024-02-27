@@ -22,16 +22,15 @@ public interface DTOMapper {
 
   DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
-  @Mapping(source = "name", target = "name")
+  @Mapping(source = "userId", target = "userId")
   @Mapping(source = "username", target = "username")
   @Mapping(source = "password", target = "password")
   @Mapping(source = "birthday", target = "birthday")
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
-  @Mapping(source = "id", target = "id")
   @Mapping(source = "creationDate", target = "creationDate")
-  @Mapping(source = "name", target = "name")
   @Mapping(source = "username", target = "username")
+  @Mapping(source = "userId", target = "userId")
   @Mapping(source = "status", target = "status")
   @Mapping(source = "password", target = "password")
   @Mapping(source = "birthday", target = "birthday")
