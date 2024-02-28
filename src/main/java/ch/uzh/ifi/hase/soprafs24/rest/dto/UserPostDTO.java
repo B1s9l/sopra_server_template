@@ -1,10 +1,16 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
+import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
+
 import java.time.LocalDate;
 
 public class UserPostDTO {
 
   private Long userId;
+
+  private String token;
+
+  private UserStatus status;
 
   private String username;
 
@@ -22,6 +28,18 @@ public class UserPostDTO {
     this.userId = userId;
   }
 
+  public String getToken() {
+        return token; }
+  public void setToken(String token) {
+        this.token = token;
+    }
+
+  public UserStatus getStatus() {
+        return status;
+    }
+  public void setStatus(UserStatus status) {
+        this.status = status;
+    }
 
   public String getUsername() {
     return username;

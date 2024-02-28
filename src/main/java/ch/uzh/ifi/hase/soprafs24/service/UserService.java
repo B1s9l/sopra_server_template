@@ -42,7 +42,8 @@ public class UserService {
   }
 
   public User createUser(User newUser) {
-    checkIfUsernameValid(newUser);
+    checkIfUsernameValid(newUser, true);
+    checkIfUserExists(newUser);
     newUser.setToken(UUID.randomUUID().toString());
     newUser.setStatus(UserStatus.OFFLINE);
     newUser.setCreationDate(LocalDate.now());
@@ -73,13 +74,16 @@ public class UserService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is not unique. Therefore, the user could not be created!");
     }
 }
-  private void checkIfUsernameValid(User userToBeCreated) {
-    String username = userToBeCreated.getUsername();
-    if (username.equals("list")) {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is not valid. Therefore, the user could not be created!");
+
+    private void checkIfUsernameValid(User userToBeValidated, boolean isCreateContext) {
+        String username = userToBeValidated.getUsername();
+        if (username.equals("list") || username.equals("settings")) {
+            String errorMessage = isCreateContext ?
+                    "The username provided is not valid. Therefore, the user could not be created!" :
+                    "The username provided is not valid. Therefore, the username could not be changed!";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
     }
-    checkIfUserExists(userToBeCreated);
-  }
 
   public User loginUser(User currentUser) {
     checkIfUserCorrect(currentUser);
@@ -98,6 +102,7 @@ public class UserService {
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username or password provided are incorrect. Check your spelling or register a new user!");
       }
   }
+
 /* Old version
     public User getUserByUserId(Long id) {
         return userRepository.findByUserId(id)
@@ -112,6 +117,43 @@ public class UserService {
     public User getUserByUsername(String username) {
         User userByUsername = userRepository.findByUsername(username);
         return userByUsername;
+    }
+    public User updateUser(User updatedUser) {
+        checkIfUsernameValid(updatedUser, false);
+        // Retrieve the existing user from the database
+        User existingUser = userRepository.findByUserId(updatedUser.getUserId());
+        if (existingUser == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with id: " + updatedUser.getUserId());
+        }
+
+        // Update the user data with the new username and birthday
+        existingUser.setUsername(updatedUser.getUsername());
+        existingUser.setBirthday(updatedUser.getBirthday());
+
+        // Save the updated user data
+        return saveAndFlush(existingUser);
+    }
+    public User updateUserStatus(User updatedUser) {
+        // Retrieve the existing user from the database
+        User existingUser = userRepository.findByUserId(updatedUser.getUserId());
+        if (existingUser == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with id: " + updatedUser.getUserId());
+        }
+
+        // Update the user data with the new username and birthday
+        existingUser.setStatus(updatedUser.getStatus());
+
+        // Save the updated user data
+        return saveAndFlush(existingUser);
+    }
+
+
+
+    private User saveAndFlush(User user) {
+        User savedUser = userRepository.save(user);
+        userRepository.flush();
+        log.debug("Saved Information for User: {}", savedUser);
+        return savedUser;
     }
 
 }

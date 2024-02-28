@@ -7,9 +7,13 @@ import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 
 @RestController
 public class UserController {
@@ -19,6 +23,8 @@ public class UserController {
   UserController(UserService userService) {
     this.userService = userService;
   }
+
+  //GET MAPPINGS
 
   @GetMapping("/users")
   @ResponseStatus(HttpStatus.OK)
@@ -32,8 +38,6 @@ public class UserController {
     return userGetDTOs;
   }
 
-
-
   @GetMapping("/users/{userId}") // New endpoint for fetching a specific user by id
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
@@ -41,6 +45,10 @@ public class UserController {
     User user = userService.getUserByUserId(userId);
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
   }
+
+
+
+//POST MAPPINGS
 
   @PostMapping("/users")
   @ResponseStatus(HttpStatus.CREATED)
@@ -59,5 +67,47 @@ public class UserController {
     User existingUser = userService.loginUser(userInput);
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(existingUser);
   }
+
+    //PUT MAPPING
+    @PutMapping("/users/{userId}") // New endpoint for updating user data by user id
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO updateUser(@PathVariable Long userId, @RequestBody UserPostDTO userPostDTO) {
+        // Retrieve the user from the database by userId
+        User existingUser = userService.getUserByUserId(userId);
+
+        // Check if the new username is already in use by another user
+        User userWithNewUsername = userService.getUserByUsername(userPostDTO.getUsername());
+        if (userWithNewUsername != null && !userWithNewUsername.getUserId().equals(existingUser.getUserId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is not unique. Therefore, the username could not be changed!");
+        }
+
+        // Update the user data with the new username and birthday
+        existingUser.setUsername(userPostDTO.getUsername());
+        existingUser.setBirthday(userPostDTO.getBirthday());
+
+        // Save the updated user data
+        userService.updateUser(existingUser);
+
+        // Convert and return the updated user DTO
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(existingUser);
+    }
+    @PutMapping("/users/status/{userId}") // New endpoint for updating user data by user id
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO updateUserStatus(@PathVariable Long userId, @RequestBody UserPostDTO userPostDTO) {
+        // Retrieve the user from the database by userId
+        User existingUser = userService.getUserByUserId(userId);
+
+        if (existingUser != null) {
+            existingUser.setStatus(userPostDTO.getStatus());
+        }
+
+        userService.updateUserStatus(existingUser);
+
+        // Convert and return the updated user DTO
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(existingUser);
+    }
+
 
 }
