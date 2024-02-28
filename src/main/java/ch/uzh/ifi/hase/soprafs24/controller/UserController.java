@@ -12,9 +12,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
-
 @RestController
 public class UserController {
 
