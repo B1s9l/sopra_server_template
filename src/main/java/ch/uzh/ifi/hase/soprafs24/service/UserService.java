@@ -168,7 +168,7 @@ public class UserService {
         return userToBeLoggedOut;
     }
 
-  private void checkIfUserCorrect(User userToBeLoggedIn) throws ResponseStatusException {
+  private void checkIfUserCorrect(User userToBeLoggedIn) {
       User userByUsername = userRepository.findByUsername(userToBeLoggedIn.getUsername());
 
       if (userByUsername == null || !(userByUsername != null && userByUsername.getPassword().equals(userToBeLoggedIn.getPassword()))) {
