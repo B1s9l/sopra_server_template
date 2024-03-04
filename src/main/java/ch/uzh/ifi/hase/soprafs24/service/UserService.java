@@ -168,7 +168,7 @@ public class UserService {
         return userToBeLoggedOut;
     }
 
-  private void checkIfUserCorrect(User userToBeLoggedIn) {
+  private void checkIfUserCorrect(User userToBeLoggedIn) throws ResponseStatusException {
       User userByUsername = userRepository.findByUsername(userToBeLoggedIn.getUsername());
 
       if (userByUsername == null || !(userByUsername != null && userByUsername.getPassword().equals(userToBeLoggedIn.getPassword()))) {
@@ -238,19 +238,6 @@ public class UserService {
         // Update the user data with the new username and birthday
         existingUser.setUsername(updatedUser.getUsername());
         existingUser.setBirthday(updatedUser.getBirthday());
-
-        // Save the updated user data
-        return saveAndFlush(existingUser);
-    }
-    public User updateUserStatus(User updatedUser) {
-        // Retrieve the existing user from the database
-        User existingUser = userRepository.findByUserId(updatedUser.getUserId());
-        if (existingUser == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with id: " + updatedUser.getUserId());
-        }
-
-        // Update the user data with the new username and birthday
-        existingUser.setStatus(updatedUser.getStatus());
 
         // Save the updated user data
         return saveAndFlush(existingUser);
