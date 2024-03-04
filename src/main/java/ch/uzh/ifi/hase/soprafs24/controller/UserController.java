@@ -23,25 +23,61 @@ public class UserController {
 
   //GET MAPPINGS
 
-  @GetMapping("/users")
+  @PostMapping("/getusers")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public List<UserGetDTO> getAllUsers() {
-    List<User> users = userService.getUsers();
-    List<UserGetDTO> userGetDTOs = new ArrayList<>();
-    for (User user : users) {
-      userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
-    }
-    return userGetDTOs;
-  }
+  public List<UserGetDTO> getUsers(@RequestBody(required = false) String token) {
+      if (token != null) {
+          token = token.replaceAll("\"", "");
+          if (userService.checkIfTokenMaster(token)){
+              List<User> users = userService.getAllUsers();
+              List<UserGetDTO> userGetDTOs = new ArrayList<>();
+              for (User user : users) {
+                  userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+              }
+              return userGetDTOs;
+          }
+          else if (userService.checkIfTokenValid(token)) {
+              List<User> users = userService.getUsers(token);
+              List<UserGetDTO> userGetDTOs = new ArrayList<>();
+              for (User user : users) {
+                  userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+              }
+              return userGetDTOs;
+          } else {
+              throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The provided token is invalid! Try restarting the session!");
+          }
 
+      }
+      List<User> users = userService.getUsers();
+      List<UserGetDTO> userGetDTOs = new ArrayList<>();
+      for (User user : users) {
+          userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+      }
+      return userGetDTOs;
+  }
+//CHECKPOINT
   @GetMapping("/users/{userId}") // New endpoint for fetching a specific user by id
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public UserGetDTO getUserByUserId(@PathVariable Long userId) {
-    User user = userService.getUserByUserId(userId);
-    return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
+  public UserGetDTO getUserByUserId(@PathVariable Long userId, @RequestBody String token) {
+      if (token != null) {
+          token = token.replaceAll("\"", "");
+          if (userService.checkIfTokenMaster(token)){
+              User user = userService.getUserByUserIdMaster(userId);
+              return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
+          }
+          else if (userService.checkIfTokenValid(token)) {
+              User user = userService.getUserByUserIdBasic(userId);
+              return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
+          } else {
+              throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The provided token is invalid! Try restarting the session!");
+          }
+
+      }
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The provided token is invalid! Try restarting the session!");
   }
+
 
 
 
@@ -65,18 +101,27 @@ public class UserController {
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(existingUser);
   }
 
+  @PostMapping("/logout")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public UserGetDTO logoutUser(@RequestBody String token) {
+      User existingUser = userService.logoutUser(token);
+      return DTOMapper.INSTANCE.convertEntityToUserGetDTO(existingUser);
+  }
+
+
     //PUT MAPPING
     @PutMapping("/users/{userId}") // New endpoint for updating user data by user id
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserGetDTO updateUser(@PathVariable Long userId, @RequestBody UserPostDTO userPostDTO) {
         // Retrieve the user from the database by userId
-        User existingUser = userService.getUserByUserId(userId);
+        User existingUser = userService.getUserByUserIdBasic(userId);
 
         // Check if the new username is already in use by another user
         User userWithNewUsername = userService.getUserByUsername(userPostDTO.getUsername());
         if (userWithNewUsername != null && !userWithNewUsername.getUserId().equals(existingUser.getUserId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is not unique. Therefore, the username could not be changed!");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The username provided is not unique. Therefore, the username could not be changed!");
         }
 
         // Update the user data with the new username and birthday
@@ -89,22 +134,5 @@ public class UserController {
         // Convert and return the updated user DTO
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(existingUser);
     }
-    @PutMapping("/users/status/{userId}") // New endpoint for updating user data by user id
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public UserGetDTO updateUserStatus(@PathVariable Long userId, @RequestBody UserPostDTO userPostDTO) {
-        // Retrieve the user from the database by userId
-        User existingUser = userService.getUserByUserId(userId);
-
-        if (existingUser != null) {
-            existingUser.setStatus(userPostDTO.getStatus());
-        }
-
-        userService.updateUserStatus(existingUser);
-
-        // Convert and return the updated user DTO
-        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(existingUser);
-    }
-
 
 }

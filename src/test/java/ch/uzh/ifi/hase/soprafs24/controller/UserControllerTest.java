@@ -48,10 +48,6 @@ public class UserControllerTest {
     // given
     User user = new User();
 
-    /* Remove NAME
-    user.setName("Firstname Lastname");
-    */
-
     user.setUsername("firstname@lastname");
     user.setStatus(UserStatus.OFFLINE);
 
@@ -62,14 +58,11 @@ public class UserControllerTest {
     given(userService.getUsers()).willReturn(allUsers);
 
     // when
-    MockHttpServletRequestBuilder getRequest = get("/users").contentType(MediaType.APPLICATION_JSON);
+    MockHttpServletRequestBuilder postRequest = post("/getusers").contentType(MediaType.APPLICATION_JSON);
 
     // then
-    mockMvc.perform(getRequest).andExpect(status().isOk())
+    mockMvc.perform(postRequest).andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)))
-        /* Remove NAME
-        .andExpect(jsonPath("$[0].name", is(user.getName())))
-        */
         .andExpect(jsonPath("$[0].username", is(user.getUsername())))
         .andExpect(jsonPath("$[0].status", is(user.getStatus().toString())));
   }

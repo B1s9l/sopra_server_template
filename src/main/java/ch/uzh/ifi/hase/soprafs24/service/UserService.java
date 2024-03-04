@@ -17,6 +17,9 @@ import java.util.UUID;
 
 import java.time.LocalDate;
 
+import java.util.Arrays;
+import java.util.ArrayList;
+
 /**
  * User Service
  * This class is the "worker" and responsible for all functionality related to
@@ -36,16 +39,66 @@ public class UserService {
   public UserService(@Qualifier("userRepository") UserRepository userRepository) {
     this.userRepository = userRepository;
   }
+//CHECKPOINT
+//CHECKPOINT
+//CHECKPOINT
+//CHECKPOINT
 
-  public List<User> getUsers() {
-    return this.userRepository.findAll();
-  }
+    public List<User> getUsers() {
+        List<User> users = this.userRepository.findAll();
+        List<User> basicUsers = new ArrayList<>();
+
+        for (User user : users) {
+            // Create a new User object with only desired information
+            User basicUser = new User();
+            basicUser.setUsername(user.getUsername());
+            basicUser.setBirthday(user.getBirthday());
+            basicUser.setUserId(user.getUserId());
+            basicUser.setCreationDate(user.getCreationDate());
+            basicUser.setStatus(user.getStatus());
+            // Add more fields as needed
+
+            // Add the basicUser to the basicUsers list
+            basicUsers.add(basicUser);
+        }
+
+        return basicUsers;
+    }
+
+    public List<User> getUsers(String token) {
+      if (token == null) {
+          return getUsers();
+      }
+      List<User> advancedUsers = getAllUsers();
+      User userWithToken = null;
+
+      for (User user : advancedUsers) {
+          if (user.getToken().equals(token)) {
+              userWithToken = user;
+              break;
+          }
+      }
+
+      if (userWithToken != null) {
+          User updatedUser = userRepository.findByUserId(userWithToken.getUserId());
+
+          if (updatedUser != null) {
+              advancedUsers.remove(userWithToken);
+              advancedUsers.add(updatedUser);
+          }
+      }
+        return advancedUsers;
+    }
+
+    public List<User> getAllUsers() {
+      return this.userRepository.findAll();
+    }
 
   public User createUser(User newUser) {
     checkIfUsernameValid(newUser, true);
     checkIfUserExists(newUser);
     newUser.setToken(UUID.randomUUID().toString());
-    newUser.setStatus(UserStatus.OFFLINE);
+    newUser.setStatus(UserStatus.ONLINE);
     newUser.setCreationDate(LocalDate.now());
 
     // saves the given entity but data is only persisted in the database once
@@ -71,48 +124,104 @@ public class UserService {
   private void checkIfUserExists(User userToBeCreated) {
     User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
     if (userByUsername != null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is not unique. Therefore, the user could not be created!");
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "The username provided is not unique. Therefore, the user could not be created!");
     }
 }
 
     private void checkIfUsernameValid(User userToBeValidated, boolean isCreateContext) {
         String username = userToBeValidated.getUsername();
-        if (username.equals("list") || username.equals("settings")) {
+
+        // Regular expression to match only letters and numbers
+        String regex = "^[a-zA-Z0-9]+$";
+        List<String> illegalWords = Arrays.asList("list", "settings");
+
+        if (!username.matches(regex) || illegalWords.contains(username)) {
             String errorMessage = isCreateContext ?
                     "The username provided is not valid. Therefore, the user could not be created!" :
                     "The username provided is not valid. Therefore, the username could not be changed!";
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, errorMessage);
         }
     }
 
+
   public User loginUser(User currentUser) {
     checkIfUserCorrect(currentUser);
-    currentUser.setStatus(UserStatus.ONLINE);
     userRepository.flush();
     log.debug("Logged In for User: {}", currentUser);
     User existingUser = userRepository.findByUsername(currentUser.getUsername());
+      existingUser.setStatus(UserStatus.ONLINE);
     return existingUser;
   }
 
+    public User logoutUser(String token) {
+        List<User> users = getAllUsers();
+        User userToBeLoggedOut = null;
+        token = token.replaceAll("\"", "");
+
+        for (User user : users) {
+            System.out.println("user.getToken(): " + user.getToken());
+            if (user.getToken().equals(token)) {
+                userToBeLoggedOut = user;
+            }
+        }
+        userToBeLoggedOut.setStatus(UserStatus.OFFLINE);
+        return userToBeLoggedOut;
+    }
+
   private void checkIfUserCorrect(User userToBeLoggedIn) {
       User userByUsername = userRepository.findByUsername(userToBeLoggedIn.getUsername());
-      User passwordByUsername = userRepository.findByUsername(userToBeLoggedIn.getUsername());
 
-      if (userByUsername == null || !(passwordByUsername != null && userByUsername.getPassword().equals(userToBeLoggedIn.getPassword()))) {
+      if (userByUsername == null || !(userByUsername != null && userByUsername.getPassword().equals(userToBeLoggedIn.getPassword()))) {
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username or password provided are incorrect. Check your spelling or register a new user!");
       }
   }
 
-/* Old version
-    public User getUserByUserId(Long id) {
-        return userRepository.findByUserId(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id: " + id));
-    }
-*/
-    public User getUserByUserId(Long userId) {
-        User userByUserId = userRepository.findByUserId(userId);
-        return userByUserId;
+    public boolean checkIfTokenValid(String token) {
+        List<User> users = getAllUsers();
+
+        for (User user : users) {
+            if (user.getToken().equals(token)) { // Assuming getToken() method returns the token for a user
+                return true;
+            }
         }
+        return false;
+    }
+
+    public boolean checkIfTokenMaster(String token) {
+        String masterCode = "mastercode";
+
+            if (token.equals(masterCode)) { // Assuming getToken() method returns the token for a user
+                return true;
+            }
+
+        return false;
+    }
+
+    public User getUserByUserIdMaster(Long userId) {
+        User userByUserId = userRepository.findByUserId(userId);
+        if (userByUserId != null) {
+            return userByUserId;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the provided userId was not found!");
+        }
+
+        }
+
+    public User getUserByUserIdBasic(Long userId) {
+        User userByUserId = userRepository.findByUserId(userId);
+        if (userByUserId != null) {
+            User basicUser = new User();
+            basicUser.setUsername(userByUserId.getUsername());
+            basicUser.setBirthday(userByUserId.getBirthday());
+            basicUser.setUserId(userByUserId.getUserId());
+            basicUser.setCreationDate(userByUserId.getCreationDate());
+            basicUser.setStatus(userByUserId.getStatus());
+            return userByUserId;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the provided userId was not found!");
+        }
+
+    }
 
     public User getUserByUsername(String username) {
         User userByUsername = userRepository.findByUsername(username);
@@ -123,7 +232,7 @@ public class UserService {
         // Retrieve the existing user from the database
         User existingUser = userRepository.findByUserId(updatedUser.getUserId());
         if (existingUser == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with id: " + updatedUser.getUserId());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id: " + updatedUser.getUserId());
         }
 
         // Update the user data with the new username and birthday
