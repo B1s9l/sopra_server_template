@@ -72,17 +72,12 @@ public class UserControllerTest {
     // given
     User user = new User();
     user.setUserId(1L);
-    /* Remove NAME
-    user.setName("Test User");
-    */
+
     user.setUsername("testUsername");
     user.setToken("1");
     user.setStatus(UserStatus.ONLINE);
 
     UserPostDTO userPostDTO = new UserPostDTO();
-    /* Remove NAME
-    userPostDTO.setName("Test User");
-    */
     userPostDTO.setUsername("testUsername");
 
     given(userService.createUser(Mockito.any())).willReturn(user);
@@ -95,15 +90,20 @@ public class UserControllerTest {
     // then
     mockMvc.perform(postRequest)
         .andExpect(status().isCreated())
-        /* Temporarily removed
         .andExpect(jsonPath("$.userId", is(user.getUserId().intValue())))
-        */
-        /* Remove NAME
-        .andExpect(jsonPath("$.name", is(user.getName())))
-        */
         .andExpect(jsonPath("$.username", is(user.getUsername())))
         .andExpect(jsonPath("$.status", is(user.getStatus().toString())));
   }
+
+  //////////////////////////////////////////////////////////////////
+
+   
+
+
+
+
+
+    ////////////////////////////////////////////////////
 
   /**
    * Helper Method to convert userPostDTO into a JSON string such that the input

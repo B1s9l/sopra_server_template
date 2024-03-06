@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.469s</div>
+<div class="counter">0.565s</div>
 <p>duration</p>
 </div>
 </td>
@@ -79,17 +79,17 @@
 </thead>
 <tr>
 <td class="success">createUser_duplicateUsername_throwsException()</td>
-<td class="success">0.044s</td>
+<td class="success">0.049s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">createUser_validInputs_success()</td>
-<td class="success">0.403s</td>
+<td class="success">0.493s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">find_testUsername_must_be_null()</td>
-<td class="success">0.022s</td>
+<td class="success">0.023s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -97,12 +97,12 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>2024-03-04 15:21:45.637  INFO 48736 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [ch.uzh.ifi.hase.soprafs24.service.UserServiceIntegrationTest], using SpringBootContextLoader
-2024-03-04 15:21:45.642  INFO 48736 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [ch.uzh.ifi.hase.soprafs24.service.UserServiceIntegrationTest]: no resource found for suffixes {-context.xml, Context.groovy}.
-2024-03-04 15:21:45.642  INFO 48736 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ch.uzh.ifi.hase.soprafs24.service.UserServiceIntegrationTest]: UserServiceIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2024-03-04 15:21:45.679  INFO 48736 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ch.uzh.ifi.hase.soprafs24.Application for test class ch.uzh.ifi.hase.soprafs24.service.UserServiceIntegrationTest
-2024-03-04 15:21:45.692  INFO 48736 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
-2024-03-04 15:21:45.693  INFO 48736 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@64f3f849, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@3abe1c9e, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@71586f, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@15d41953, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@6e1e9a10, org.springframework.test.context.support.DirtiesContextTestExecutionListener@248e31a1, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2eb6a77f, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@1b1d2d7b, org.springframework.test.context.event.EventPublishingTestExecutionListener@1c9fa12, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@549fc0b3, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@4f091800, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@3d8d926f, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@73daf6a6, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@59ea2a36, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@5e24f013]
+<pre>2024-03-06 14:32:45.962  INFO 85311 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [ch.uzh.ifi.hase.soprafs24.service.UserServiceIntegrationTest], using SpringBootContextLoader
+2024-03-06 14:32:45.964  INFO 85311 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [ch.uzh.ifi.hase.soprafs24.service.UserServiceIntegrationTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2024-03-06 14:32:45.964  INFO 85311 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ch.uzh.ifi.hase.soprafs24.service.UserServiceIntegrationTest]: UserServiceIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2024-03-06 14:32:46.008  INFO 85311 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ch.uzh.ifi.hase.soprafs24.Application for test class ch.uzh.ifi.hase.soprafs24.service.UserServiceIntegrationTest
+2024-03-06 14:32:46.021  INFO 85311 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2024-03-06 14:32:46.021  INFO 85311 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@d884e9a, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@23389e2b, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@1c0cba60, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@34b294c4, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@7b01f056, org.springframework.test.context.support.DirtiesContextTestExecutionListener@1caff0db, org.springframework.test.context.transaction.TransactionalTestExecutionListener@65899694, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@453d2a55, org.springframework.test.context.event.EventPublishingTestExecutionListener@31cae1e4, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@5280e62e, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@7b14e7dc, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@57d71569, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@31741bb6, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@64903a20, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@38e61b69]
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -112,21 +112,21 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::               (v2.4.13)
 
-2024-03-04 15:21:45.806  INFO 48736 --- [    Test worker] c.u.i.h.s.s.UserServiceIntegrationTest   : Starting UserServiceIntegrationTest using Java 17.0.10 on The-MAC.local with PID 48736 (started by basil in /Users/basil/MyFiles/Programming/SoPra/sopra-fs24-template-server)
-2024-03-04 15:21:45.811  INFO 48736 --- [    Test worker] c.u.i.h.s.s.UserServiceIntegrationTest   : No active profile set, falling back to default profiles: default
-2024-03-04 15:21:46.605  INFO 48736 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-03-04 15:21:46.753  INFO 48736 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 137 ms. Found 1 JPA repository interfaces.
-2024-03-04 15:21:47.541  INFO 48736 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2024-03-04 15:21:47.965  INFO 48736 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2024-03-04 15:21:48.205  INFO 48736 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-03-04 15:21:48.348  INFO 48736 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.32.Final
-2024-03-04 15:21:48.440  INFO 48736 --- [    Test worker] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
-2024-03-04 15:21:48.672  INFO 48736 --- [    Test worker] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
-2024-03-04 15:21:49.433  INFO 48736 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2024-03-04 15:21:49.445  INFO 48736 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-03-04 15:21:50.364  WARN 48736 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2024-03-04 15:21:50.570  INFO 48736 --- [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
-2024-03-04 15:21:50.979  INFO 48736 --- [    Test worker] c.u.i.h.s.s.UserServiceIntegrationTest   : Started UserServiceIntegrationTest in 5.278 seconds (JVM running for 14.747)
+2024-03-06 14:32:46.118  INFO 85311 --- [    Test worker] c.u.i.h.s.s.UserServiceIntegrationTest   : Starting UserServiceIntegrationTest using Java 17.0.10 on The-MAC.local with PID 85311 (started by basil in /Users/basil/MyFiles/Programming/SoPra/sopra-fs24-template-server)
+2024-03-06 14:32:46.121  INFO 85311 --- [    Test worker] c.u.i.h.s.s.UserServiceIntegrationTest   : No active profile set, falling back to default profiles: default
+2024-03-06 14:32:46.772  INFO 85311 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-03-06 14:32:46.867  INFO 85311 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 85 ms. Found 1 JPA repository interfaces.
+2024-03-06 14:32:47.859  INFO 85311 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-03-06 14:32:48.359  INFO 85311 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-03-06 14:32:48.588  INFO 85311 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-03-06 14:32:48.668  INFO 85311 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.32.Final
+2024-03-06 14:32:48.760  INFO 85311 --- [    Test worker] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2024-03-06 14:33:26.277  INFO 85311 --- [    Test worker] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2024-03-06 14:33:27.109  INFO 85311 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-03-06 14:33:27.120  INFO 85311 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-03-06 14:33:28.182  WARN 85311 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-03-06 14:33:28.380  INFO 85311 --- [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2024-03-06 14:33:28.874  INFO 85311 --- [    Test worker] c.u.i.h.s.s.UserServiceIntegrationTest   : Started UserServiceIntegrationTest in 5.921 seconds (JVM running for 15.843)
 </pre>
 </span>
 </div>
@@ -138,7 +138,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 7.6</a> at 4 Mar 2024, 15:21:51</p>
+<a href="http://www.gradle.org">Gradle 7.6</a> at 6 Mar 2024, 14:33:29</p>
 </div>
 </div>
 </body>
