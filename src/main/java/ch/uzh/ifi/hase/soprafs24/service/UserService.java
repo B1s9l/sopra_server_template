@@ -39,26 +39,19 @@ public class UserService {
   public UserService(@Qualifier("userRepository") UserRepository userRepository) {
     this.userRepository = userRepository;
   }
-//CHECKPOINT
-//CHECKPOINT
-//CHECKPOINT
-//CHECKPOINT
 
     public List<User> getUsers() {
         List<User> users = this.userRepository.findAll();
         List<User> basicUsers = new ArrayList<>();
 
         for (User user : users) {
-            // Create a new User object with only desired information
             User basicUser = new User();
             basicUser.setUsername(user.getUsername());
             basicUser.setBirthday(user.getBirthday());
             basicUser.setUserId(user.getUserId());
             basicUser.setCreationDate(user.getCreationDate());
             basicUser.setStatus(user.getStatus());
-            // Add more fields as needed
 
-            // Add the basicUser to the basicUsers list
             basicUsers.add(basicUser);
         }
 
@@ -101,8 +94,6 @@ public class UserService {
     newUser.setStatus(UserStatus.ONLINE);
     newUser.setCreationDate(LocalDate.now());
 
-    // saves the given entity but data is only persisted in the database once
-    // flush() is called
     newUser = userRepository.save(newUser);
     userRepository.flush();
 
@@ -180,7 +171,7 @@ public class UserService {
         List<User> users = getAllUsers();
 
         for (User user : users) {
-            if (user.getToken().equals(token)) { // Assuming getToken() method returns the token for a user
+            if (user.getToken().equals(token)) {
                 return true;
             }
         }
@@ -189,7 +180,7 @@ public class UserService {
 
     public boolean checkIfTokenMaster(String token) {
         String masterCode = "mastercode";
-            if (token.equals(masterCode)) { // Assuming getToken() method returns the token for a user
+            if (token.equals(masterCode)) {
                 return true;
             }
 

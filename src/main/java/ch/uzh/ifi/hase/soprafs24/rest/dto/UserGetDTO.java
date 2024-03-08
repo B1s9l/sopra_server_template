@@ -7,12 +7,14 @@ import java.time.LocalDate;
 public class UserGetDTO {
 
   private Long userId;
-  private String token;
   private String username;
   private UserStatus status;
-  private String password;
   private LocalDate birthday;
   private LocalDate creationDate;
+  //I need to add password and token to the user object because a POST call to /users (to register)
+  //will return the user object and without the password and token login  and my secure routing won't work.
+  private String password;
+  private String token;
 
   public Long getUserId() {
     return userId;

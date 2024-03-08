@@ -56,23 +56,23 @@ public class UserController {
       }
       return userGetDTOs;
   }
-//CHECKPOINT
-  @GetMapping("/users/{userId}") // New endpoint for fetching a specific user by id
+
+  @GetMapping("/users/{userId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
   public UserGetDTO getUserByUserId(@PathVariable Long userId, @RequestBody String token) {
-      if (token != null) { //THIS LOOP IS ENTERED IN THE TEST; A TOKEN IS THEREFORE SENT SUCCESSFULLY
-          token = token.replaceAll("\"", ""); //THIS LINE IS ENTERED AS IT SHOULD
-          boolean isMaster = userService.checkIfTokenMaster(token); //THIS FUNCTION IS NEVER CALLED
-          boolean isValid = userService.checkIfTokenValid(token); //THIS FUNCTION IS NEVER CALLED
-          if (isMaster){ //THIS LOOP IS SKIPPED BECAUSE FUNCTION ABOVE IS NOT CALLED
+      if (token != null) {
+          token = token.replaceAll("\"", "");
+          boolean isMaster = userService.checkIfTokenMaster(token);
+          boolean isValid = userService.checkIfTokenValid(token);
+          if (isMaster){
               User user = userService.getUserByUserIdMaster(userId);
               return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
           }
-          else if (isValid) { //THIS LOOP IS SKIPPED BECAUSE FUNCTION ABOVE IS NOT CALLED
+          else if (isValid) {
               User user = userService.getUserByUserIdBasic(userId);
               return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
-          } else { //THIS ELSE IS ENTERED AND EXCEPTION THROWN EVEN IF ITS NOT SUPPOSED TOO
+          } else {
               throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The provided token is invalid! Try restarting the session!");
           }
 
@@ -113,27 +113,22 @@ public class UserController {
 
 
     //PUT MAPPING
-    @PutMapping("/users/{userId}") // New endpoint for updating user data by user id
+    @PutMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserGetDTO updateUser(@PathVariable Long userId, @RequestBody UserPostDTO userPostDTO) {
-        // Retrieve the user from the database by userId
         User existingUser = userService.getUserByUserIdBasic(userId);
 
-        // Check if the new username is already in use by another user
         User userWithNewUsername = userService.getUserByUsername(userPostDTO.getUsername());
         if (userWithNewUsername != null && !userWithNewUsername.getUserId().equals(existingUser.getUserId())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "The username provided is not unique. Therefore, the username could not be changed!");
         }
 
-        // Update the user data with the new username and birthday
         existingUser.setUsername(userPostDTO.getUsername());
         existingUser.setBirthday(userPostDTO.getBirthday());
 
-        // Save the updated user data
         userService.updateUser(existingUser);
 
-        // Convert and return the updated user DTO
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(existingUser);
     }
 
