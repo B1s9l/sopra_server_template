@@ -133,7 +133,7 @@ public class UserService {
 
         // Regular expression to match only letters and numbers
         String regex = "^[a-zA-Z0-9]+$";
-        List<String> illegalWords = Arrays.asList("list", "settings");
+        List<String> illegalWords = Arrays.asList("settings");
 
         if (!username.matches(regex) || illegalWords.contains(username)) {
             String errorMessage = isCreateContext ?
@@ -189,7 +189,6 @@ public class UserService {
 
     public boolean checkIfTokenMaster(String token) {
         String masterCode = "mastercode";
-
             if (token.equals(masterCode)) { // Assuming getToken() method returns the token for a user
                 return true;
             }
@@ -204,7 +203,6 @@ public class UserService {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the provided userId was not found!");
         }
-
         }
 
     public User getUserByUserIdBasic(Long userId) {
@@ -234,23 +232,16 @@ public class UserService {
         if (existingUser == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id: " + updatedUser.getUserId());
         }
-
         // Update the user data with the new username and birthday
         existingUser.setUsername(updatedUser.getUsername());
         existingUser.setBirthday(updatedUser.getBirthday());
-
         // Save the updated user data
-        return saveAndFlush(existingUser);
-    }
-
-
-
-    private User saveAndFlush(User user) {
-        User savedUser = userRepository.save(user);
+        User savedUser = userRepository.save(existingUser);
         userRepository.flush();
         log.debug("Saved Information for User: {}", savedUser);
         return savedUser;
     }
+
 
 }
 

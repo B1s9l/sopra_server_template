@@ -61,7 +61,7 @@ public class UserPostDTO {
     return birthday;
   }
 
-  public void setBirthday() {
+  public void setBirthday(LocalDate birthday) {
     this.birthday = birthday;
   }
 

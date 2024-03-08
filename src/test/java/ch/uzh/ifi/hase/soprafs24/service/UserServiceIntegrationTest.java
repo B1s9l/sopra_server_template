@@ -84,9 +84,7 @@ public void find_testUsername_must_be_null() {
     assertNull(userRepository.findByUsername("testUsername"));
 
     User testUser = new User();
-    /* Remove NAME
-    testUser.setName("testName");
-    */
+
     testUser.setUsername("testUsername");
     testUser.setPassword("password");
     testUser.setBirthday(LocalDate.of(2000, 1, 1));
@@ -95,10 +93,6 @@ public void find_testUsername_must_be_null() {
     // attempt to create second user with same username
     User testUser2 = new User();
 
-    // change the name but forget about the username
-    /* Remove NAME
-    testUser2.setName("testName2");
-    */
     testUser2.setUsername("testUsername");
     testUser2.setPassword("password");
     testUser.setBirthday(LocalDate.of(2000, 1, 1));

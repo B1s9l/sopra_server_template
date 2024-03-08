@@ -61,16 +61,18 @@ public class UserController {
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
   public UserGetDTO getUserByUserId(@PathVariable Long userId, @RequestBody String token) {
-      if (token != null) {
-          token = token.replaceAll("\"", "");
-          if (userService.checkIfTokenMaster(token)){
+      if (token != null) { //THIS LOOP IS ENTERED IN THE TEST; A TOKEN IS THEREFORE SENT SUCCESSFULLY
+          token = token.replaceAll("\"", ""); //THIS LINE IS ENTERED AS IT SHOULD
+          boolean isMaster = userService.checkIfTokenMaster(token); //THIS FUNCTION IS NEVER CALLED
+          boolean isValid = userService.checkIfTokenValid(token); //THIS FUNCTION IS NEVER CALLED
+          if (isMaster){ //THIS LOOP IS SKIPPED BECAUSE FUNCTION ABOVE IS NOT CALLED
               User user = userService.getUserByUserIdMaster(userId);
               return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
           }
-          else if (userService.checkIfTokenValid(token)) {
+          else if (isValid) { //THIS LOOP IS SKIPPED BECAUSE FUNCTION ABOVE IS NOT CALLED
               User user = userService.getUserByUserIdBasic(userId);
               return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
-          } else {
+          } else { //THIS ELSE IS ENTERED AND EXCEPTION THROWN EVEN IF ITS NOT SUPPOSED TOO
               throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The provided token is invalid! Try restarting the session!");
           }
 
