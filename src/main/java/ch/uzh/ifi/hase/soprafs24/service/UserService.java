@@ -19,6 +19,9 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.ArrayList;
 
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Bean;
+
 /**
  * User Service
  * This class is the "worker" and responsible for all functionality related to
@@ -29,6 +32,21 @@ import java.util.ArrayList;
 @Service
 @Transactional
 public class UserService {
+    @Bean
+    public ApplicationRunner initializeDefaultUser(UserRepository userRepository) {
+        return args -> {
+            // Check if a default user already exists
+            if (userRepository.count() == 0) {
+                // Create a default user
+                User defaultUser = new User();
+                defaultUser.setUsername("master");
+                defaultUser.setPassword("123");
+
+                // Call the createUser method
+                createUser(defaultUser);
+            }
+        };
+    }
 
   private final Logger log = LoggerFactory.getLogger(UserService.class);
 
