@@ -1,11 +1,9 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
-
 import javax.persistence.*;
 import java.io.Serializable;
-
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Internal User Representation
@@ -34,18 +32,14 @@ public class User implements Serializable {
   private String token;
 
   @Column(nullable = false)
-  private UserStatus status;
-
-  @Column(nullable = false)
   private String password;
 
   @Column(nullable = true)
-  private LocalDate birthday;
+  private LocalDateTime lastIn;
 
-  @Column(nullable = false)
-  private LocalDate creationDate;
 
-  public Long getUserId() {
+
+    public Long getUserId() {
     return userId;
   }
   public void setUserId(Long userId) {
@@ -66,13 +60,6 @@ public class User implements Serializable {
     this.token = token;
   }
 
-  public UserStatus getStatus() {
-    return status;
-  }
-  public void setStatus(UserStatus status) {
-    this.status = status;
-  }
-
   public String getPassword() {
     return password;
   }
@@ -80,19 +67,10 @@ public class User implements Serializable {
     this.password = password;
   }
 
-  public LocalDate getBirthday() {
-    return birthday;
+  public LocalDateTime getLastIn() {
+     return lastIn;
   }
-
-  public void setBirthday(LocalDate birthday) {
-    this.birthday = birthday;
+  public void setLastIn(LocalDateTime lastIn) {
+      this.lastIn = lastIn;
   }
-
-  public LocalDate getCreationDate() {
-    return creationDate;
-  }
-  public void setCreationDate(LocalDate creationDate) {
-    this.creationDate = creationDate;
-  }
-
 }

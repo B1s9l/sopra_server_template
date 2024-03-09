@@ -1,13 +1,11 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -57,7 +55,6 @@ public class UserControllerTest {
     User user = new User();
 
     user.setUsername("firstname@lastname");
-    user.setStatus(UserStatus.OFFLINE);
 
     List<User> allUsers = Collections.singletonList(user);
 
@@ -71,8 +68,7 @@ public class UserControllerTest {
     // then
     mockMvc.perform(postRequest).andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$[0].username", is(user.getUsername())))
-        .andExpect(jsonPath("$[0].status", is(user.getStatus().toString())));
+        .andExpect(jsonPath("$[0].username", is(user.getUsername())));
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,7 +85,6 @@ public class UserControllerTest {
     user.setUserId(1L);
     user.setUsername("testUsername");
     user.setToken("1");
-    user.setStatus(UserStatus.ONLINE);
 
     UserPostDTO userPostDTO = new UserPostDTO();
     userPostDTO.setUsername("testUsername");
@@ -246,13 +241,12 @@ public class UserControllerTest {
         User updatedUser = new User();
         updatedUser.setUserId(user.getUserId());
         updatedUser.setUsername("newUsername");
-        updatedUser.setBirthday(LocalDate.now());
 
         given(userService.getUserByUserIdBasic(user.getUserId())).willReturn(user);
         given(userService.getUserByUsername(user.getUsername())).willReturn(user);
         given(userService.updateUser(Mockito.any())).willReturn(updatedUser);
 
-        String requestInput = "{\"username\": \"" + updatedUser.getUsername() + "\", \"birthday\": \"" + updatedUser.getBirthday() + "\"}";
+        String requestInput = "{\"username\": \"" + updatedUser.getUsername() + "\"}";
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/users/" + user.getUserId())
@@ -262,8 +256,7 @@ public class UserControllerTest {
         // then
         mockMvc.perform(putRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username", is(updatedUser.getUsername())))
-                .andExpect(jsonPath("$.birthday", is(updatedUser.getBirthday().toString())));
+                .andExpect(jsonPath("$.username", is(updatedUser.getUsername())));
     }
 
 
@@ -280,14 +273,13 @@ public class UserControllerTest {
         User updatedUser = new User();
         updatedUser.setUserId(user.getUserId());
         updatedUser.setUsername("newUsername");
-        updatedUser.setBirthday(LocalDate.now());
 
         given(userService.getUserByUserIdBasic(Mockito.any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the provided userId was not found!"));
         given(userService.getUserByUsername(user.getUsername())).willReturn(user);
         given(userService.updateUser(Mockito.any())).willReturn(updatedUser);
 
-        String requestInput = "{\"username\": \"" + updatedUser.getUsername() + "\", \"birthday\": \"" + updatedUser.getBirthday() + "\"}";
+        String requestInput = "{\"username\": \"" + updatedUser.getUsername()+ "\"}";
         System.out.println(requestInput);
 
         // when/then -> do the request + validate the result
@@ -314,13 +306,12 @@ public class UserControllerTest {
         User updatedUser = new User();
         updatedUser.setUserId(user.getUserId());
         updatedUser.setUsername("newUsername");
-        updatedUser.setBirthday(LocalDate.now());
 
         given(userService.getUserByUserIdBasic(user.getUserId())).willReturn(user);
         given(userService.getUserByUsername(user.getUsername())).willReturn(user);
         given(userService.updateUser(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.CONFLICT));
 
-        String requestInput = "{\"username\": \"" + updatedUser.getUsername() + "\", \"birthday\": \"" + updatedUser.getBirthday() + "\"}";
+        String requestInput = "{\"username\": \"" + updatedUser.getUsername() + "\"}";
         System.out.println(requestInput);
 
         // when/then -> do the request + validate the result

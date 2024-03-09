@@ -94,14 +94,14 @@ public class UserController {
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
   }
 
-  @PostMapping("/login")
-  @ResponseStatus(HttpStatus.OK)
-  @ResponseBody
-  public UserGetDTO loginUser(@RequestBody UserPostDTO userPostDTO) {
-    User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
-    User existingUser = userService.loginUser(userInput);
-    return DTOMapper.INSTANCE.convertEntityToUserGetDTO(existingUser);
-  }
+    @PostMapping("/unlock")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO unlockUser(@RequestBody UserPostDTO userPostDTO) {
+        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        User existingUser = userService.unlockUser(userInput);
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(existingUser);
+    }
 
   @PostMapping("/logout")
   @ResponseStatus(HttpStatus.OK)
@@ -125,7 +125,6 @@ public class UserController {
         }
 
         existingUser.setUsername(userPostDTO.getUsername());
-        existingUser.setBirthday(userPostDTO.getBirthday());
 
         userService.updateUser(existingUser);
 

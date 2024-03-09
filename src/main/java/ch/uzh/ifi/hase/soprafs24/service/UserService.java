@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.slf4j.Logger;
@@ -15,7 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.UUID;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -47,10 +46,7 @@ public class UserService {
         for (User user : users) {
             User basicUser = new User();
             basicUser.setUsername(user.getUsername());
-            basicUser.setBirthday(user.getBirthday());
             basicUser.setUserId(user.getUserId());
-            basicUser.setCreationDate(user.getCreationDate());
-            basicUser.setStatus(user.getStatus());
 
             basicUsers.add(basicUser);
         }
@@ -91,8 +87,6 @@ public class UserService {
     checkIfUsernameValid(newUser, true);
     checkIfUserExists(newUser);
     newUser.setToken(UUID.randomUUID().toString());
-    newUser.setStatus(UserStatus.ONLINE);
-    newUser.setCreationDate(LocalDate.now());
 
     newUser = userRepository.save(newUser);
     userRepository.flush();
@@ -135,14 +129,14 @@ public class UserService {
     }
 
 
-  public User loginUser(User currentUser) {
-    checkIfUserCorrect(currentUser);
-    userRepository.flush();
-    log.debug("Logged In for User: {}", currentUser);
-    User existingUser = userRepository.findByUsername(currentUser.getUsername());
-      existingUser.setStatus(UserStatus.ONLINE);
-    return existingUser;
-  }
+    public User unlockUser(User currentUser) {
+        checkIfPinCorrect(currentUser);
+        userRepository.flush();
+        log.debug("Logged In for User: {}", currentUser);
+        User existingUser = userRepository.findByPassword(currentUser.getPassword());
+        existingUser.setLastIn(LocalDateTime.now());
+        return existingUser;
+    }
 
     public User logoutUser(String token) {
         List<User> users = getAllUsers();
@@ -155,7 +149,6 @@ public class UserService {
                 userToBeLoggedOut = user;
             }
         }
-        userToBeLoggedOut.setStatus(UserStatus.OFFLINE);
         return userToBeLoggedOut;
     }
 
@@ -166,6 +159,13 @@ public class UserService {
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username or password provided are incorrect. Check your spelling or register a new user!");
       }
   }
+    private void checkIfPinCorrect(User userToBeLoggedIn) {
+        User userByPassword = userRepository.findByPassword(userToBeLoggedIn.getPassword());
+
+        if (userByPassword == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The pin provided is incorrect. Check your spelling or request a pin!");
+        }
+    }
 
     public boolean checkIfTokenValid(String token) {
         List<User> users = getAllUsers();
@@ -201,10 +201,7 @@ public class UserService {
         if (userByUserId != null) {
             User basicUser = new User();
             basicUser.setUsername(userByUserId.getUsername());
-            basicUser.setBirthday(userByUserId.getBirthday());
             basicUser.setUserId(userByUserId.getUserId());
-            basicUser.setCreationDate(userByUserId.getCreationDate());
-            basicUser.setStatus(userByUserId.getStatus());
             return userByUserId;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the provided userId was not found!");
@@ -225,7 +222,6 @@ public class UserService {
         }
         // Update the user data with the new username and birthday
         existingUser.setUsername(updatedUser.getUsername());
-        existingUser.setBirthday(updatedUser.getBirthday());
         // Save the updated user data
         User savedUser = userRepository.save(existingUser);
         userRepository.flush();

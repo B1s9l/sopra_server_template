@@ -7,7 +7,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-03-08T15:19:19+0100",
+    date = "2024-03-09T15:37:30+0100",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 17.0.10 (Eclipse Adoptium)"
 )
 public class DTOMapperImpl implements DTOMapper {
@@ -20,13 +20,11 @@ public class DTOMapperImpl implements DTOMapper {
 
         User user = new User();
 
-        user.setBirthday( userPostDTO.getBirthday() );
         user.setPassword( userPostDTO.getPassword() );
+        user.setLastIn( userPostDTO.getLastIn() );
         user.setUserId( userPostDTO.getUserId() );
         user.setToken( userPostDTO.getToken() );
         user.setUsername( userPostDTO.getUsername() );
-        user.setStatus( userPostDTO.getStatus() );
-        user.setCreationDate( userPostDTO.getCreationDate() );
 
         return user;
     }
@@ -39,13 +37,11 @@ public class DTOMapperImpl implements DTOMapper {
 
         UserGetDTO userGetDTO = new UserGetDTO();
 
-        userGetDTO.setBirthday( user.getBirthday() );
         userGetDTO.setPassword( user.getPassword() );
-        userGetDTO.setCreationDate( user.getCreationDate() );
+        userGetDTO.setLastIn( user.getLastIn() );
         userGetDTO.setUserId( user.getUserId() );
         userGetDTO.setToken( user.getToken() );
         userGetDTO.setUsername( user.getUsername() );
-        userGetDTO.setStatus( user.getStatus() );
 
         return userGetDTO;
     }

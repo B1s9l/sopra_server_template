@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,27 +41,17 @@ public class UserServiceIntegrationTest {
     assertNull(userRepository.findByUsername("testUsername"));
 
     User testUser = new User();
-    /* Remove NAME
-    testUser.setName("testName");
-    */
     testUser.setUsername("testUsername");
     testUser.setPassword("password");
-    testUser.setBirthday(LocalDate.of(2000, 1, 1));
 
     // when
     User createdUser = userService.createUser(testUser);
 
     // then
     assertEquals(testUser.getUserId(), createdUser.getUserId());
-    /* Remove NAME
-    assertEquals(testUser.getName(), createdUser.getName());
-    */
     assertEquals(testUser.getUsername(), createdUser.getUsername());
     assertEquals(testUser.getPassword(), createdUser.getPassword());
-    assertEquals(testUser.getBirthday(), createdUser.getBirthday());
-    //assertEquals(testUser.getCreationDate(), createdUser.getCreationDate());
     assertNotNull(createdUser.getToken());
-    assertEquals(UserStatus.ONLINE, createdUser.getStatus());
   }
 
 @Test
@@ -70,12 +59,8 @@ public void find_testUsername_must_be_null() {
     assertNull(userRepository.findByUsername("testUsername"));
 
     User testUser = new User();
-    /* Remove NAME
-    testUser.setName("testName");
-    */
     testUser.setUsername("testUsername");
     testUser.setPassword("password");
-    testUser.setBirthday(LocalDate.of(2000, 1, 1));
     User createdUser = userService.createUser(testUser);
 }
 
@@ -87,7 +72,6 @@ public void find_testUsername_must_be_null() {
 
     testUser.setUsername("testUsername");
     testUser.setPassword("password");
-    testUser.setBirthday(LocalDate.of(2000, 1, 1));
     User createdUser = userService.createUser(testUser);
 
     // attempt to create second user with same username
@@ -95,7 +79,6 @@ public void find_testUsername_must_be_null() {
 
     testUser2.setUsername("testUsername");
     testUser2.setPassword("password");
-    testUser.setBirthday(LocalDate.of(2000, 1, 1));
 
     // check that an error is thrown
     assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2));
